@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PalTracker
 {
+  [Route("/time-entries")]
   public class TimeEntryController : ControllerBase
   {
     private readonly ITimeEntryRepository _repository;

@@ -7,34 +7,37 @@ namespace PalTracker
 {
   public class InMemoryTimeEntryRepository : ITimeEntryRepository
   {
-    public bool Contains(long id)
-    {
-      throw new NotImplementedException();
-    }
+    private readonly IDictionary<long, TimeEntry> _timeEntries = new Dictionary<long, TimeEntry>();
+
+    public bool Contains(long id) => _timeEntries.ContainsKey(id);
+
+    public TimeEntry Find(long id) => _timeEntries[id];
+
+    public IEnumerable<TimeEntry> List() => _timeEntries.Values.ToList();
 
     public TimeEntry Create(TimeEntry timeEntry)
     {
-      throw new NotImplementedException();
+      var id = _timeEntries.Count + 1;
+
+      timeEntry.Id = id;
+
+      _timeEntries.Add(id, timeEntry);
+
+      return timeEntry;
     }
 
     public void Delete(long id)
     {
-      throw new NotImplementedException();
-    }
-
-    public TimeEntry Find(long id)
-    {
-      throw new NotImplementedException();
-    }
-
-    public IEnumerable<TimeEntry> List()
-    {
-      throw new NotImplementedException();
+      _timeEntries.Remove(id);
     }
 
     public TimeEntry Update(long id, TimeEntry timeEntry)
     {
-      throw new NotImplementedException();
+      timeEntry.Id = id;
+
+      _timeEntries[id] = timeEntry;
+
+      return timeEntry;
     }
   }
 }

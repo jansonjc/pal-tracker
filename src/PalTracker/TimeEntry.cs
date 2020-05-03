@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace PalTracker
 {
-  public class TimeEntry
+  public struct TimeEntry
   {
-    public long? Id { get; }
-    public long ProjectId { get; }
-    public long UserId { get; }
-    public DateTime Date { get; }
-    public int Hours { get; }
+    public long? Id { get; set; }
+    public long ProjectId { get; set; }
+    public long UserId { get; set; }
+    public DateTime Date { get; set; }
+    public int Hours { get; set; }
 
     public TimeEntry(long id, long projectId, long userId, DateTime date, int hours)
     {
