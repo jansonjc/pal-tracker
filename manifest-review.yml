@@ -1,6 +1,6 @@
 ﻿---
 applications:
-- name: pal-tracker
+- name: pal-tracker-review
   path: src/PalTracker/bin/Release/netcoreapp3.1/publish
   routes:
   - route: pal-tracker-janson-review.cfapps.io
