@@ -1,0 +1,8 @@
+﻿---
+applications:
+- name: pal-tracker
+  path: src/PalTracker/bin/Release/netcoreapp3.1/publish
+  routes:
+  - route: pal-tracker-janson-production.cfapps.io
+  env:
+    WELCOME_MESSAGE: Hello from Cloud Foundry
