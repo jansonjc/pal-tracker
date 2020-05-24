@@ -13,16 +13,12 @@ namespace PalTrackerTests
     {
 
       IHostBuilder hostBuilder = new HostBuilder()
-        .ConfigureWebHost(webHost =>
+        .ConfigureWebHostDefaults(webHost =>
         {
           webHost.UseTestServer();
           webHost.UseStartup<PalTracker.Startup>();
-
         })
-        .ConfigureAppConfiguration((hostingContext, config) =>
-        {
-          config.AddEnvironmentVariables();
-        });
+        .ConfigureAppConfiguration((hostingContext, config) => { config.AddEnvironmentVariables(); });
 
 
       // build and start the IHost

@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
+using System;
 
 namespace PalTracker
 {
@@ -10,7 +14,7 @@ namespace PalTracker
   {
     public Startup(IConfiguration configuration)
     {
-      Configuration = configuration;
+      Configuration = configuration;      
     }
 
     public IConfiguration Configuration { get; }
@@ -31,11 +35,19 @@ namespace PalTracker
         Configuration.GetValue<string>("CF_INSTANCE_ADDR", "Not set")
         ));
 
-      services.AddSingleton<ITimeEntryRepository, InMemoryTimeEntryRepository>();
+      // services.AddSingleton<ITimeEntryRepository, InMemoryTimeEntryRepository>();
+      services.AddScoped<ITimeEntryRepository, MySqlTimeEntryRepository>();
+
+      services.AddDbContext<TimeEntryContext>(options => options.UseMySql(Configuration));
+      //services.AddDbContextPool<TimeEntryContext>(options => options.UseMySql(Configuration["mysql:client:ConnectionString"]));
+            
+      System.Diagnostics.Debug.WriteLine("Debug.Writeline: MySql Connection String => {0}", Configuration["mysql:client:ConnectionString"]);
+      Console.WriteLine("Console.Writeline: MySql Connection String => {0}", Configuration["mysql:client:ConnectionString"]);
+
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
     {
       if (env.IsDevelopment())
       {
@@ -50,6 +62,8 @@ namespace PalTracker
       {
         endpoints.MapControllers();
       });
+
+      logger.LogInformation("LogInformation: MySql Connection String => {0}", Configuration["mysql:client:ConnectionString"]);
     }
   }
 }
